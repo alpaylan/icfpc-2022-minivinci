@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "d45d580f-6302-40fe-8274-e8c658370a13",
+		"name": "Vinci",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User/Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mrgllemre+6@gmail.com\",\n    \"team_name\": \"Team JBL\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic Zm9vOmJhcg==",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mrgllemre@gmail.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/Retrieve",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzEwMjcsIm9yaWdfaWF0IjoxNjYxMzY3NDI3fQ.Q9_NqaAhaMpUvl-yf5Up2uRfjfXevZrQOBVd8vUGNqQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/Verificate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/verification?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtcmdsbGVtcmUrMkBnbWFpbC5jb20iLCJleHAiOjE2NjE0NTQwNDd9.MzJ-9qtczAC7IkNjgorvGPy8S9TsnUULeYwlNgl4Y1A",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"verification"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtcmdsbGVtcmUrMkBnbWFpbC5jb20iLCJleHAiOjE2NjE0NTQwNDd9.MzJ-9qtczAC7IkNjgorvGPy8S9TsnUULeYwlNgl4Y1A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/ResendVerificationEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mrgllemre@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/verification/resend-email",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"verification",
+						"resend-email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/SendRenewPasswordEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mrgllemre@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/password/send-renew-email",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"password",
+						"send-renew-email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/RenewPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtcmdsbGVtcmVAZ21haWwuY29tIiwiZXhwIjoxNjYxNDU0MzQ0fQ.bD5rdATPB4UVz_129_zeBt2S2stKasKPl-km8dEwys8\",\n    \"password\": \"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/password/renew",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"password",
+						"renew"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submission/Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjE0NzQxNTcsIm9yaWdfaWF0IjoxNjYxNDcwNTU3fQ.9pReo4Izwu-aaitmVWYYatDbSaHVFm_Fwr81WdA_slI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/emregullu/ornek.txt"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/submissions/2/create",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"submissions",
+						"2",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submission/Retrieve",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzE4NzMsIm9yaWdfaWF0IjoxNjYxMzY4MjczfQ.3f2f03KBel6akrgUrFsNmiVpaj4qg5jRhvfzXRwbMLQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/submissions/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"",
+						"submissions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submission/GetAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzE4NzMsIm9yaWdfaWF0IjoxNjYxMzY4MjczfQ.3f2f03KBel6akrgUrFsNmiVpaj4qg5jRhvfzXRwbMLQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/submissions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"submissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Problems/GetAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjE1MjM1OTEsIm9yaWdfaWF0IjoxNjYxNTE5OTkxfQ.aDzelamHVKF7wqiZp-dHCqU9Im6on4xZ0NEUdgag5mo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/problems",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"problems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Support/GetAllMessages",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzIxOTcsIm9yaWdfaWF0IjoxNjYxMzY4NTk3fQ.bKGSeAC5cdZ3-4lpfCNWOXyRRnCeHbq_3-DgnS4aRi0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/support",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"support"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Support/SendMessage",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzIxOTcsIm9yaWdfaWF0IjoxNjYxMzY4NTk3fQ.bKGSeAC5cdZ3-4lpfCNWOXyRRnCeHbq_3-DgnS4aRi0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"message\": \"First message\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/support",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"support"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Announcements/GetAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjEzNzE4NzMsIm9yaWdfaWF0IjoxNjYxMzY4MjczfQ.3f2f03KBel6akrgUrFsNmiVpaj4qg5jRhvfzXRwbMLQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/announcements",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"announcements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result/GetUserResults",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjE1MjM1OTEsIm9yaWdfaWF0IjoxNjYxNTE5OTkxfQ.aDzelamHVKF7wqiZp-dHCqU9Im6on4xZ0NEUdgag5mo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/results/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"results",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result/GetScoreboard",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZ2xsZW1yZUBnbWFpbC5jb20iLCJleHAiOjE2NjE1MjM1OTEsIm9yaWdfaWF0IjoxNjYxNTE5OTkxfQ.aDzelamHVKF7wqiZp-dHCqU9Im6on4xZ0NEUdgag5mo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/results/scoreboard",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"results",
+						"scoreboard"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

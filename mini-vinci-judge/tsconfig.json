@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "target": "ES5",
+        "module": "commonjs",
+        "outDir": "dist",
+        "baseUrl": "src"
+    },
+    "include": ["src"],
+    "comment": "src/scripts/PNGGen.ts is an organizer-only target generator that needs node-canvas; excluded so the judge builds without native deps.",
+    "exclude": ["src/scripts"]
+}

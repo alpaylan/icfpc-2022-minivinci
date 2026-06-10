@@ -1,0 +1,5 @@
+allow_login: true
+allow_submission: true
+# true => scoreboard is computed live from the database (new submissions appear).
+# false => the frozen 2022 final scoreboard is served from ASSETS_BASE_URL.
+update_scoreboard: true

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Alperen Keles" />
+  <title>ICFP Contest 2022</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ICFP Contest 2022</h1>
+<p class="subtitle">Specification V0.0</p>
+<p class="author">Alperen Keles</p>
+</header>
+<h1 data-number="1" id="introduction"><span
+class="header-section-number">1</span>
+Introduction</h1>
+<p>The mighty wizards of Lambda land has seen all
+your poses from last year and they were absolutely
+fascinated by them. They were so inspired by you
+that they have been discovering the secret arts of
+painting for the rest of the year, waiting for you
+to join them. Your task, if you are to accept it;
+will be to develop algorithms for robo-painters of
+the future. After all, there are so many paintings
+to do, and so little of us functional programmers
+to do them.</p>
+<h2 data-number="1.1" id="updates"><span
+class="header-section-number">1.1</span>
+Updates</h2>
+<p>Note that there will be updates to this
+specification, and more problems will be released
+during the contest. This will happen at these
+specific times:</p>
+<ul>
+<li>12 hours into the contest (new problems only,
+no changes to specification)</li>
+<li>24 hours into the contest (after the lightning
+division ends)</li>
+<li>36 hours into the contest</li>
+<li>48 hours into the contest</li>
+</ul>
+<h2 data-number="1.2" id="changelog"><span
+class="header-section-number">1.2</span>
+Changelog</h2>
+<p>Any changes will be published here.</p>
+<h1 data-number="2"
+id="problem-specification"><span
+class="header-section-number">2</span> Problem
+Specification</h1>
+<p>The task is to <strong>paint</strong> a given
+<strong>canvas</strong> with the least
+<strong>cost</strong> and highest
+<strong>similarity</strong>.</p>
+<p>As part of the task, you will be given;</p>
+<ul>
+<li>a set of <strong>moves</strong> applicable
+over the <strong>canvas</strong>,</li>
+<li>an <strong>instruction language</strong> to
+express your set of <strong>moves</strong>,</li>
+<li>a <strong>cost function</strong> for
+calculating the <strong>cost</strong> of each
+<strong>move</strong>,</li>
+<li>a <strong>similarity function</strong> for
+calculating the <strong>similarity</strong> of
+your <strong>painted canvas</strong> to the
+<strong>target painting</strong>.</li>
+</ul>
+<p>As part of individual problems, you will be
+given;</p>
+<ul>
+<li>an initial <strong>canvas</strong>,</li>
+<li>a target <strong>painting</strong>.</li>
+</ul>
+<h2 data-number="2.1" id="canvas"><span
+class="header-section-number">2.1</span>
+Canvas</h2>
+<p>Canvas is an abstract 2-dimensional pixel space
+of <a
+href="https://en.wikipedia.org/wiki/RGBA_color_model"><strong>RGBA</strong>
+channels</a>.</p>
+<p>Each <strong>move</strong> transforms the
+canvas in a different sense.</p>
+<p>After all moves are applied to a
+<strong>canvas</strong>, it can be rendered to a
+<strong>painting</strong>.</p>
+<p><strong>Canvas</strong> is made out of
+<strong>blocks</strong>.</p>
+<h3 data-number="2.1.1" id="blocks"><span
+class="header-section-number">2.1.1</span>
+Blocks</h3>
+<p>Blocks are either a set of sub-blocks; or a
+structure with shape and color. In the eyes of the
+functional programmer, one might imagine such a
+definition.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Block</span> <span class="ot">=</span> <span class="dt">Set</span><span class="op">&lt;</span><span class="dt">Block</span><span class="op">&gt;</span> <span class="op">|</span> <span class="dt">ConcreteBlock</span> <span class="dt">Shape</span> <span class="dt">Color</span></span></code></pre></div>
+<p>The <strong>initial canvas</strong> only holds
+exactly one block, colored according to the
+individual problem.</p>
+<p>Blocks are uniquely defined by their
+<strong>block_id</strong>.</p>
+<p>The initial canvas has one block with
+<strong>block_id = 0</strong>.</p>
+<h2 data-number="2.2" id="painting"><span
+class="header-section-number">2.2</span>
+Painting</h2>
+<p>Painting is a concrete 2-dimensional pixel
+space of <a
+href="https://en.wikipedia.org/wiki/RGBA_color_model"><strong>RGBA</strong>
+channels</a>. For individual problems, you will be
+provided with <strong>PNG</strong> files for the
+paintings.</p>
+<h2 data-number="2.3" id="moves"><span
+class="header-section-number">2.3</span>
+Moves</h2>
+<p>We present you with <strong>6</strong>
+different moves you can use to paint your
+canvases.</p>
+<h3 data-number="2.3.1" id="cut-moves"><span
+class="header-section-number">2.3.1</span> Cut
+Moves</h3>
+<p>Cut moves take a block, and some cut
+instruction over that block. Create new
+sub-blocks; preserving the colors.</p>
+<h4 data-number="2.3.1.1" id="line-cut-move"><span
+class="header-section-number">2.3.1.1</span> Line
+Cut Move</h4>
+<p>A line cut move takes a block(defined by its
+block-id), an orientation(V for Vertical, H for
+Horizontal), an offset(the 1-d coordinate for the
+cut operation) and creates 2 sub-blocks of the
+given block.</p>
+<p>Sub-blocks of line cuts are numbered from
+<em>bottom to top, or left to right</em>.</p>
+<p><strong>todo@Keles: put a picture
+here</strong></p>
+<h4 data-number="2.3.1.2"
+id="point-cut-move"><span
+class="header-section-number">2.3.1.2</span> Point
+Cut Move</h4>
+<p>A point cut move takes a block(defined by its
+block-id), an offset(the 2-d coordinate for the
+cut operation) and creates 4 sub-blocks of the
+given block.</p>
+<p>Sub-blocks of point cuts are numbered from
+<em>bottom left using reverse clock-wise
+numbering</em>.</p>
+<p><strong>todo@Keles: put a picture
+here</strong></p>
+<h3 data-number="2.3.2" id="color-move"><span
+class="header-section-number">2.3.2</span> Color
+Move</h3>
+<p>Color move takes a block, and some color on
+<strong>RGBA</strong> space. It changes the color
+content of the given block to the given color.</p>
+<h3 data-number="2.3.3" id="swap-move"><span
+class="header-section-number">2.3.3</span> Swap
+Move</h3>
+<p>Swap move takes two blocks. It swaps the color
+contents of the given blocks.</p>
+<p>Blocks must have the <strong>same
+shape</strong> to be swapped.</p>
+<h3 data-number="2.3.4" id="merge-move"><span
+class="header-section-number">2.3.4</span> Merge
+Move</h3>
+<p>Merge move takes two blocks. It merges the
+blocks by creating a new block, adding these
+blocks to this new block as sub-blocks.</p>
+<p>Blocks must be <strong>compatible</strong> to
+be merged. They must be adjoint, and their adjoint
+sides must have the same length. Informally; the
+merge of the blocks must create a new
+rectangle.</p>
+<h2 data-number="2.4"
+id="instruction-language"><span
+class="header-section-number">2.4</span>
+Instruction Language</h2>
+<p>Your task is to apply a set of moves to a
+canvas to similarize it to a given target
+painting. The way you will provide these set of
+moves is via submitting an <strong>ISL(Instruction
+Set Language)</strong> file for each problem.
+<strong>ISL code</strong> directly corresponds to
+the set of moves given above.</p>
+<p>A BNF(Backus-Naur Form) form of the ISL grammar
+is given in <a href="./isl_bnf.html">this
+file</a>.</p>
+<h2 data-number="2.5" id="cost-function"><span
+class="header-section-number">2.5</span> Cost
+Function</h2>
+<p>Each move has a <code>base + dynamic</code>
+cost.</p>
+<p>Below is the table for <strong>base cost for
+each move</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Move Type</th>
+<th>Base Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Line Cut</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Point Cut</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>Color</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Swap</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Merge</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The function for dynamic cost is;</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dynamic_cost(move, block) <span class="ot">=</span> base_cost(move) x <span class="dv">1</span><span class="op">/</span>size(block) x [alpha]</span></code></pre></div>
+<p>Move cost over a block is;</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>move_cost(move, block) <span class="ot">=</span> base_cost(move) <span class="op">+</span> dynamic_cost(move, block)</span></code></pre></div>
+<p>For each submission, these score are calculated
+for each move and aggregated for the total cost
+calculation.</p>
+<h2 data-number="2.6"
+id="similarity-function"><span
+class="header-section-number">2.6</span>
+Similarity Function</h2>
+<p>After processing all moves of a submission, the
+system calculates the similarity of the result to
+the target painting.</p>
+<p>This is done via calculating <strong>pixel
+difference</strong> for each pixel and aggregating
+those results.</p>
+<p>Pixel difference is calculated via
+<strong>Euclidian Distance of HSV Values of
+Pixels</strong>. Calculation is given below;</p>
+<p><span class="math inline">\(d_h =
+\dfrac{min(|h_1-h_0|, 360 -
+|h_1-h_0|)}{180}\)</span><br />
+<span class="math inline">\(d_v =
+\dfrac{|v_1-v_0|}{255}\)</span><br />
+<span class="math inline">\(d_s =
+|s_1-s_0|\)</span><br />
+<span class="math inline">\(distance = \sqrt{d_h
+\times d_h + d_s \times d_s + d_v \times
+d_v}\)</span></p>
+<h1 data-number="3" id="submission"><span
+class="header-section-number">3</span>
+Submission</h1>
+<p>You will submit <strong>ISL code</strong> over
+panel inside the portal. For each problem, you
+will have 20 tokens for submission. Each
+submission will spend 1 token, and tokens will be
+refilled to 20 at the start of each hour.</p>
+<h1 data-number="4" id="deadlines"><span
+class="header-section-number">4</span>
+Deadlines</h1>
+<p>As traditional, the contest will have a
+Lightning Division spanning the first 24 hours. To
+qualify for the Lightning Division prize, submit
+your ISL codes by September 3, 2021, 12:00pm
+(noon) UTC.</p>
+<p>To qualify for the Full Division prize, submit
+your ISL cides by September 5, 2021, 12:00pm
+(noon) UTC.</p>
+<p>In order to qualify for any prizes, your source
+code must be submitted by the end of the contest
+as well. You can do this through the web
+portal.</p>
+<h1 data-number="5"
+id="determining-the-winner"><span
+class="header-section-number">5</span> Determining
+the Winner</h1>
+<p>We will use the same procedure to determine the
+winner in both the lightning and full divisions,
+ranking the teams by cumulative score, computed as
+the sum of scores for each task.</p>
+</body>
+</html>

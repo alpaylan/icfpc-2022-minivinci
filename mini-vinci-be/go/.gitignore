@@ -1,0 +1,15 @@
+# Secrets / local config
+.env
+config.yml
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+
+# Build artifacts
+/mini-vinci-be
+/server

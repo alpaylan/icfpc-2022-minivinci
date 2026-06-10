@@ -1,0 +1,22 @@
+# Frontend (deployed separately to Cloudflare Pages)
+mini-vinci-fe
+
+# Dependencies / build artifacts
+**/node_modules
+**/dist
+**/build
+
+# Local data & secrets
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/*.log
+**/.env
+mini-vinci-be/go/config.yml
+mini-vinci-judge/submissions
+
+# Specs & VCS
+Specifications
+.git
+.idea
+.DS_Store

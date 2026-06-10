@@ -1,0 +1,44 @@
+# Fly.io configuration for the mini-vinci backend.
+# Rename `app` to your own app, then: fly launch --no-deploy  (or `fly apps create`)
+#   fly volumes create minivinci_data --size 1 --region iad
+#   fly secrets set JWT_LOGIN_SECRET=... JWT_VERIFICATION_SECRET=... JWT_RENEW_PASSWORD_SECRET=...
+#   fly deploy
+
+app = "minivinci-be"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  DATABASE_PATH = "/data/minivinci.db"
+  JUDGE_DIR = "/app/judge"
+  ASYNC_EAGER = "true"
+  # ASSETS_BASE_URL defaults to the still-live original bucket. Once you mirror
+  # the assets to R2, set it here (and as REACT_APP_ASSETS_BASE_URL on the frontend):
+  # ASSETS_BASE_URL = "https://<your-r2-public-host>"
+
+# Persistent volume for the SQLite database (and local submission files).
+[[mounts]]
+  source = "minivinci_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "15s"
+    method = "GET"
+    path = "/healthz"
+
+# Single small machine is plenty for a revived hobby instance.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
