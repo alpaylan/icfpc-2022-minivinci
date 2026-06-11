@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Paper, Theme, Typography } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from 'tss-react/mui';
 import { useEffect, useState } from 'react';
@@ -9,13 +8,7 @@ import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { authToken as authTokenAtom } from '../../../atoms/auth';
 import headerLogo from '../../../assets/headerLogo.png';
-import verificationImage from '../../../assets/verification.jpg';
-import {
-  login,
-  register,
-  resendVerification,
-  sendResetLink,
-} from '../../../services/auth';
+import { login, register } from '../../../services/auth';
 import Loading from '../../Loading';
 import {
   isAuthTokenExpired,
@@ -30,13 +23,11 @@ const Login = (): JSX.Element => {
   const [authToken, setAuthToken] = useRecoilState(authTokenAtom);
 
   const [loading, setLoading] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [teamName, setTeamName] = useState('');
-  const [verificationSent, setVerificationSent] = useState(false);
 
   useEffect(() => {
     if (!isAuthTokenExpired(authToken)) {
@@ -78,31 +69,17 @@ const Login = (): JSX.Element => {
     setTeamName(e.target.value as string);
   const handleToggleRegister = () => setIsRegistering(!isRegistering);
 
-  const handleResendVerification = () => {
-    setLoading(true);
-    resendVerification(email)
-      .then(() => {
-        toast.success(`Verification mail successfully resent to ${email}`);
-      })
-      .catch((err) => toast.error(err.message))
-      .finally(() => setLoading(false));
-  };
-
   const handleSubmit = () => {
     setLoading(true);
-    if (forgotPassword) {
-      sendResetLink(email)
-        .then(() =>
-          toast.success(`Password reset link successfully sent to ${email}`),
-        )
-        .catch((err) => toast.error(err.message))
-        .finally(() => setLoading(false));
-    } else if (isRegistering) {
+    if (isRegistering) {
+      // Accounts are auto-verified (the email step was removed), so register
+      // and sign the user in straight away.
       register(email, password, teamName)
-        .then(() => {
-          toast.success(`Verification mail sent to ${email}`);
-          setIsRegistering(false);
-          setVerificationSent(true);
+        .then(() => login(email, password))
+        .then((token) => {
+          setAuthToken(token);
+          updateAuthTokenInStorage(token);
+          toast.success('Account created — you are now signed in');
         })
         .catch((err) => toast.error(err.message))
         .finally(() => setLoading(false));
@@ -124,90 +101,6 @@ const Login = (): JSX.Element => {
   const passwordMatchMessage = 'Passwords should match';
   const teamNameLengthMessage = 'At least 3 characters (except spaces)';
   const alphanumericTeamNameMessage = 'Only alphanumeric characters or "_"';
-
-  const generateVerificationSentForm = () => (
-    <Box component='div' className={classes.gridContainer}>
-      <Grid container spacing={1.5}>
-        <Grid item xs={12}>
-          <Button
-            color='primary'
-            onClick={() => setVerificationSent(false)}
-            startIcon={<ChevronLeftIcon />}
-            style={{ textTransform: 'none' }}
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Box component='div' className={classes.logoContainer}>
-            <img src={verificationImage} alt='' width={150} />
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Box component='div'>{`Verification mail successfully sent to ${email}`}</Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Box component='div' className={classes.typographyContainer}>
-            <Typography className={classes.optionTypography}>
-              Not received yet?
-              <Box component='div' className={classes.horizontalSpacer} />
-              <Button
-                style={{ textTransform: 'none', padding: 0 }}
-                endIcon={<ChevronRightIcon fontSize='small' />}
-                onClick={handleResendVerification}
-              >
-                Resend verification
-              </Button>
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-
-  const generateForgotPasswordForm = () => (
-    <Box component='div' className={classes.gridContainer}>
-      <Grid container spacing={1.5}>
-        <Grid item xs={12}>
-          <Button
-            color='primary'
-            onClick={() => setForgotPassword(false)}
-            startIcon={<ChevronLeftIcon />}
-            style={{ textTransform: 'none' }}
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <TextValidator
-            name='email'
-            label='Email'
-            onChange={handleChangeEmail}
-            value={email}
-            validators={['required', 'isEmail']}
-            errorMessages={[requiredMessage, isEmailMessage]}
-            size='small'
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <Box component='div' />
-        </Grid>
-        <Grid item xs={6}>
-          <Box component='div' className={classes.submitButtonContainer}>
-            <Button
-              variant='contained'
-              color='primary'
-              type='submit'
-              style={{ textTransform: 'none' }}
-            >
-              Send Reset Link
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
-  );
 
   const generateLoginRegisterForm = () => (
     <Box component='div' className={classes.gridContainer}>
@@ -307,17 +200,6 @@ const Login = (): JSX.Element => {
               </Button>
             </Typography>
             <Typography className={classes.optionTypography}>
-              Forgot password?
-              <Box component='div' className={classes.horizontalSpacer} />
-              <Button
-                style={{ textTransform: 'none', padding: 0 }}
-                endIcon={<ChevronRightIcon fontSize='small' />}
-                onClick={() => setForgotPassword(true)}
-              >
-                Send reset link
-              </Button>
-            </Typography>
-            <Typography className={classes.optionTypography}>
               Just looking around?
               <Box component='div' className={classes.horizontalSpacer} />
               <Button
@@ -337,19 +219,15 @@ const Login = (): JSX.Element => {
     <Box component='div' className={classes.background}>
       <Loading open={loading} />
       <Paper className={classes.paper}>
-        {!verificationSent && (
-          <Box component='div' className={classes.logoContainer}>
-            <img src={headerLogo} alt='' width={150} />
-          </Box>
-        )}
+        <Box component='div' className={classes.logoContainer}>
+          <img src={headerLogo} alt='' width={150} />
+        </Box>
         <ValidatorForm
           instantValidate
           onError={(errors) => toast.error(errors)}
           onSubmit={handleSubmit}
         >
-          {verificationSent && generateVerificationSentForm()}
-          {forgotPassword && generateForgotPasswordForm()}
-          {!forgotPassword && !verificationSent && generateLoginRegisterForm()}
+          {generateLoginRegisterForm()}
         </ValidatorForm>
       </Paper>
     </Box>

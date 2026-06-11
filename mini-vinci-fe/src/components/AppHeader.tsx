@@ -84,56 +84,45 @@ const AppHeader = () => {
       <img src={logo} alt='' width={60} />
       <Box component='div' className={classes.tabsContainer}>
         <Tabs value={selectedTab} onChange={handleTabChange}>
+          {authToken && (
+            <Tab
+              value={TabKind.DASHBOARD}
+              label={
+                <Typography className={classes.tabLabel}>Dashboard</Typography>
+              }
+              id='dashboard-tab'
+            />
+          )}
           <Tab
-            label={
-              <Typography className={classes.tabLabel}>Dashboard</Typography>
-            }
-            id='dashboard-tab'
-          />
-          <Tab
+            value={TabKind.PROBLEMS}
             label={
               <Typography className={classes.tabLabel}>Problems</Typography>
             }
             id='problems-tab'
           />
           <Tab
+            value={TabKind.SCOREBOARD}
             label={
               <Typography className={classes.tabLabel}>Scoreboard</Typography>
             }
             id='scoreboard-tab'
           />
           <Tab
-            label={
-              <Typography className={classes.tabLabel}>
-                Announcements
-              </Typography>
-            }
-            id='announcements-tab'
-          />
-          <Tab
-            label={
-              <Typography className={classes.tabLabel}>Support</Typography>
-            }
-            id='support-tab'
-          />
-          <Tab
+            value={TabKind.PLAYGROUND}
             label={
               <Typography className={classes.tabLabel}>Playground</Typography>
             }
             id='playground-tab'
           />
-          <Tab
+          {authToken && (
+            <Tab
+              value={TabKind.RESULTS}
               label={
                 <Typography className={classes.tabLabel}>Results</Typography>
               }
               id='results-tab'
-          />
-          <Tab
-              label={
-                <Typography className={classes.tabLabel}>Source Code</Typography>
-              }
-              id='sourcecode-tab'
-          />
+            />
+          )}
         </Tabs>
       </Box>
       <Box component='div' className={classes.horizontalSpacer} />

@@ -16,10 +16,12 @@ const App = (): JSX.Element => {
 
   useEffect(initializeTokenFromStorage, []);
   useEffect(() => {
+    // Browse-first: signed-in users go to their dashboard, everyone else lands
+    // on the public problems page (no forced login).
     if (authToken) {
       navigate('/dashboard');
     } else {
-      navigate('/login');
+      navigate('/problems');
     }
   }, [authToken]);
 
