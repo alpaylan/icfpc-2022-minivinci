@@ -8,9 +8,10 @@ import {
   Typography,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
 import { makeStyles } from 'tss-react/mui';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authToken as authTokenAtom } from '../atoms/auth';
@@ -24,7 +25,7 @@ const AppHeader = () => {
 
   const navigate = useNavigate();
 
-  const setAuthToken = useSetRecoilState(authTokenAtom);
+  const [authToken, setAuthToken] = useRecoilState(authTokenAtom);
   const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
 
   const handleTabChange = (event: SyntheticEvent, newValue: number) => {
@@ -71,6 +72,10 @@ const AppHeader = () => {
   const handleLogout = () => {
     setAuthToken(null);
     deleteAuthTokenFromStorage();
+    navigate(`/${TabURL.LOGIN}`);
+  };
+
+  const handleLogin = () => {
     navigate(`/${TabURL.LOGIN}`);
   };
 
@@ -132,14 +137,25 @@ const AppHeader = () => {
         </Tabs>
       </Box>
       <Box component='div' className={classes.horizontalSpacer} />
-      <Button
-        onClick={handleLogout}
-        color='secondary'
-        endIcon={<LogoutIcon />}
-        style={{ textTransform: 'none' }}
-      >
-        Logout
-      </Button>
+      {authToken ? (
+        <Button
+          onClick={handleLogout}
+          color='secondary'
+          endIcon={<LogoutIcon />}
+          style={{ textTransform: 'none' }}
+        >
+          Logout
+        </Button>
+      ) : (
+        <Button
+          onClick={handleLogin}
+          color='primary'
+          endIcon={<LoginIcon />}
+          style={{ textTransform: 'none' }}
+        >
+          Login
+        </Button>
+      )}
     </Paper>
   );
 };

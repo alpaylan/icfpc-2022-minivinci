@@ -96,7 +96,9 @@ func setUpRouters(r *gin.Engine) error {
 	problemGroup := apiGroup.Group("problems")
 	problemGroup.Use(authMiddleware.MiddlewareFunc())
 	problemGroup.POST(":problem_id", submissionRouter.CreateSubmission) // added to have more meaningful endpoint uri
-	problemGroup.GET("", problemRouter.GetProblems)
+
+	// The problem list is public so guests can browse the puzzles without an account.
+	apiGroup.GET("problems", problemRouter.GetProblems)
 
 	// support
 	supportRouter := support.SupportRouter{}
@@ -119,7 +121,9 @@ func setUpRouters(r *gin.Engine) error {
 	resultGroup := apiGroup.Group("results")
 	resultGroup.Use(authMiddleware.MiddlewareFunc())
 	resultGroup.GET("user", resultRouter.GetUserResults)
-	resultGroup.GET("scoreboard", resultRouter.GetScoreboard)
+
+	// The scoreboard is public so guests can view standings without an account.
+	apiGroup.GET("results/scoreboard", resultRouter.GetScoreboard)
 
 	/*
 		r.NoRoute(func(c *gin.Context) {

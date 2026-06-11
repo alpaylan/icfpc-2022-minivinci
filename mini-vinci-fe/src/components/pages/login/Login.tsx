@@ -317,6 +317,17 @@ const Login = (): JSX.Element => {
                 Send reset link
               </Button>
             </Typography>
+            <Typography className={classes.optionTypography}>
+              Just looking around?
+              <Box component='div' className={classes.horizontalSpacer} />
+              <Button
+                style={{ textTransform: 'none', padding: 0 }}
+                endIcon={<ChevronRightIcon fontSize='small' />}
+                onClick={() => navigate('/problems')}
+              >
+                Browse without signing in
+              </Button>
+            </Typography>
           </Box>
         </Grid>
       </Grid>

@@ -10,7 +10,6 @@ import {
   Theme,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import { toast } from 'material-react-toastify';
@@ -18,10 +17,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { authToken as authTokenAtom } from '../../../atoms/auth';
 import { selectedTab as selectedTabAtom } from '../../../atoms/tabs';
 import { sharedColors, sharedStyles } from '../../../utilities/styles';
-import {
-  getAuthTokenFromStorage,
-  isAuthTokenExpired,
-} from '../../../utilities/auth';
+import { getAuthTokenFromStorage } from '../../../utilities/auth';
 import { TabKind } from '../../../variables/tabs';
 import Loading from '../../Loading';
 import AppHeader from '../../AppHeader';
@@ -31,8 +27,6 @@ import { formatToLocalDateTime } from '../../../utilities/time';
 
 const Scoreboard = (): JSX.Element => {
   const { classes } = useStyles();
-
-  const navigate = useNavigate();
 
   const [authToken, setAuthToken] = useRecoilState(authTokenAtom);
   const setSelectedTab = useSetRecoilState(selectedTabAtom);
@@ -44,32 +38,20 @@ const Scoreboard = (): JSX.Element => {
 
   const refreshScoreboard = () => {
     setLoading(true);
-    getScoreboard(authToken!)
+    getScoreboard(authToken)
       .then((fetchedScoreboard) => setScoreboard(fetchedScoreboard))
       .catch((err) => toast.error(err.message))
       .finally(() => setLoading(false));
   };
 
-  const initializeTokenFromStorage = () => {
-    const storedAuthToken = getAuthTokenFromStorage();
-    if (isAuthTokenExpired(storedAuthToken)) {
-      navigate('/login');
-    } else {
-      setAuthToken(storedAuthToken);
-    }
-  };
-
   useEffect(() => {
-    initializeTokenFromStorage();
+    // The scoreboard is public: load it for guests too, without redirecting
+    // to the login page.
+    setAuthToken(getAuthTokenFromStorage());
     setSelectedTab(TabKind.SCOREBOARD);
     document.title = 'ICFPC 2022 Scoreboard';
+    refreshScoreboard();
   }, []);
-
-  useEffect(() => {
-    if (!isAuthTokenExpired(authToken)) {
-      refreshScoreboard();
-    }
-  }, [authToken]);
 
   return (
     <Box component='div' className={classes.mainContainer}>

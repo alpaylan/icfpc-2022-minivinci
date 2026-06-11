@@ -3,7 +3,9 @@ import { Scoreboard, scoreboardFromResponse } from '../models/scoreboard';
 import { setAuthToken } from '../utilities/request';
 import api from './api';
 
-export const getScoreboard = async (authToken: string): Promise<Scoreboard> => {
+export const getScoreboard = async (
+  authToken: string | null,
+): Promise<Scoreboard> => {
   let request: AxiosRequestConfig = {
     url: '/api/results/scoreboard',
     method: 'get',

@@ -4,7 +4,9 @@ import { Problem, problemFromResponse } from '../models/problem';
 import { setAuthToken } from '../utilities/request';
 import api from './api';
 
-export const getProblems = async (authToken: string): Promise<Problem[]> => {
+export const getProblems = async (
+  authToken: string | null,
+): Promise<Problem[]> => {
   let request: AxiosRequestConfig = {
     url: '/api/problems',
     method: 'get',

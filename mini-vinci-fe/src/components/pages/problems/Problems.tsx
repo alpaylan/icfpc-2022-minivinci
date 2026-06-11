@@ -18,10 +18,7 @@ import { find } from 'lodash';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { selectedTab as selectedTabAtom } from '../../../atoms/tabs';
 import { authToken as authTokenAtom } from '../../../atoms/auth';
-import {
-  getAuthTokenFromStorage,
-  isAuthTokenExpired,
-} from '../../../utilities/auth';
+import { getAuthTokenFromStorage } from '../../../utilities/auth';
 import { TabKind } from '../../../variables/tabs';
 import Loading from '../../Loading';
 import AppHeader from '../../AppHeader';
@@ -47,7 +44,7 @@ const Problems = (): JSX.Element => {
 
   const refreshProblems = () => {
     setLoading(true);
-    getProblems(authToken!)
+    getProblems(authToken)
       .then((problemsList) => {
         setProblems(problemsList);
         if (problemsList.length > 0) {
@@ -58,26 +55,14 @@ const Problems = (): JSX.Element => {
       .finally(() => setLoading(false));
   };
 
-  const initializeTokenFromStorage = () => {
-    const storedAuthToken = getAuthTokenFromStorage();
-    if (isAuthTokenExpired(storedAuthToken)) {
-      navigate('/login');
-    } else {
-      setAuthToken(storedAuthToken);
-    }
-  };
-
   useEffect(() => {
-    initializeTokenFromStorage();
+    // Problems are public: load them for guests and logged-in users alike,
+    // without forcing a redirect to the login page.
+    setAuthToken(getAuthTokenFromStorage());
     setSelectedTab(TabKind.PROBLEMS);
     document.title = 'ICFPC 2022 Problems';
+    refreshProblems();
   }, []);
-
-  useEffect(() => {
-    if (!isAuthTokenExpired(authToken)) {
-      refreshProblems();
-    }
-  }, [authToken]);
 
   const handleChangeSelectedProblem = (e: any) => {
     const selectedProblemID = e.target.value.toString();
@@ -88,7 +73,14 @@ const Problems = (): JSX.Element => {
     setSelectedProblem(newSelectedProblem);
   };
 
-  const handleClickNewSubmission = () => setShowNewSubmissionDialog(true);
+  const handleClickNewSubmission = () => {
+    // Guests can browse, but submitting requires an account.
+    if (!authToken) {
+      navigate('/login');
+      return;
+    }
+    setShowNewSubmissionDialog(true);
+  };
   const handleCloseNewSubmission = () => setShowNewSubmissionDialog(false);
   const handleNewSubmission = () => {
     setShowNewSubmissionDialog(false);
@@ -142,7 +134,7 @@ const Problems = (): JSX.Element => {
             style={{ ...sharedStyles.buttonText }}
             onClick={handleClickNewSubmission}
           >
-            New Submission
+            {authToken ? 'New Submission' : 'Log in to submit'}
           </Button>
         </Box>
         {!!selectedProblem && (
