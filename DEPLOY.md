@@ -104,7 +104,7 @@ connect your Git repo, then set:
 | --- | --- |
 | Framework preset | Create React App |
 | Root directory | `mini-vinci-fe` |
-| Build command | `npm install && npm run build` |
+| Build command | `npm install --legacy-peer-deps && npm run build` |
 | Build output directory | `build` |
 
 Environment variables (Production **and** Preview):

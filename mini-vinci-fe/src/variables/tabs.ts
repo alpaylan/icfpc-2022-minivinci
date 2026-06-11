@@ -7,6 +7,7 @@ export enum TabKind {
   PLAYGROUND = 5,
   RESULTS = 6,
   SOURCECODE = 7,
+  SPECIFICATION = 8,
 }
 
 export enum TabURL {
@@ -20,4 +21,5 @@ export enum TabURL {
   RESET_PASSWORD = 'reset-password',
   RESULTS = 'results',
   SOURCE_CODE = 'sourcecode',
+  SPECIFICATION = 'specification',
 }

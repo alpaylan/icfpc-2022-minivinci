@@ -84,7 +84,7 @@ export S3_ENDPOINT=http://localhost:9000 S3_REGION=us-east-1 \
 
 ```bash
 cd mini-vinci-fe
-npm install
+npm install --legacy-peer-deps
 REACT_APP_API_URL=http://localhost:8080 npm start   # http://localhost:3000
 ```
 

@@ -17,11 +17,11 @@ const App = (): JSX.Element => {
   useEffect(initializeTokenFromStorage, []);
   useEffect(() => {
     // Browse-first: signed-in users go to their dashboard, everyone else lands
-    // on the public problems page (no forced login).
+    // on the specification page that explains what the contest is.
     if (authToken) {
       navigate('/dashboard');
     } else {
-      navigate('/problems');
+      navigate('/specification');
     }
   }, [authToken]);
 

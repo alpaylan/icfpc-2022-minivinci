@@ -31,6 +31,10 @@ const AppHeader = () => {
   const handleTabChange = (event: SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
     switch (newValue) {
+      case TabKind.SPECIFICATION: {
+        navigate(`/${TabURL.SPECIFICATION}`);
+        break;
+      }
       case TabKind.DASHBOARD: {
         navigate(`/${TabURL.DASHBOARD}`);
         break;
@@ -84,6 +88,13 @@ const AppHeader = () => {
       <img src={logo} alt='' width={60} />
       <Box component='div' className={classes.tabsContainer}>
         <Tabs value={selectedTab} onChange={handleTabChange}>
+          <Tab
+            value={TabKind.SPECIFICATION}
+            label={
+              <Typography className={classes.tabLabel}>Specification</Typography>
+            }
+            id='specification-tab'
+          />
           {authToken && (
             <Tab
               value={TabKind.DASHBOARD}

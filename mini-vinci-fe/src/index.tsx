@@ -25,6 +25,7 @@ import Problems from './components/pages/problems/Problems';
 import Scoreboard from './components/pages/scoreboard/Scoreboard';
 import Results from './components/pages/results/Results';
 import SourceCode from './components/pages/sourcecode/SourceCode';
+import Specification from './components/pages/specification/Specification';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -37,6 +38,7 @@ root.render(
           <Routes>
             <Route path={TabURL.LOGIN} element={<Login />} />
             <Route path={TabURL.DASHBOARD} element={<Dashboard />} />
+            <Route path={TabURL.SPECIFICATION} element={<Specification />} />
             <Route path={TabURL.PROBLEMS} element={<Problems />} />
             <Route path={TabURL.SCOREBOARD} element={<Scoreboard />} />
             <Route path={TabURL.ANNOUNCEMENTS} element={<Announcements />} />
