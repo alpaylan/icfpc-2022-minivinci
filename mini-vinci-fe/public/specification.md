@@ -1,124 +1,57 @@
-
 # Introduction
 
-The mighty wizards of Lambda land has seen all your poses from last year and they were absolutely fascinated by them.
-They were so inspired by you that they have been discovering the secret arts of painting for the rest of the year,
-waiting for you to join them. Your mission, if you choose to accept it; will be to develop algorithms for robo-painters of
-the future. After all, there are so many paintings to make, and so little of us functional programmers
-to make them. The winner will receive the honor medal of Leonardo Da Vinci, the RoboVinci Medal.
+The mighty wizards of Lambda land have seen all your poses from last year and they were absolutely fascinated by them. They were so inspired by you that they have been discovering the secret arts of painting for the rest of the year, waiting for you to join them. Your mission, if you choose to accept it, will be to develop algorithms for robo-painters of the future. After all, there are so many paintings to make, and so little of us functional programmers to make them.
 
+> This is a revived, self-hosted version of the ICFP Programming Contest 2022 ("RoboVinci"). Register to solve problems and appear on the live scoreboard, or just explore the problems and the [Playground](/playground) without an account.
 
-## Full Division v.1
+## Problems
 
-As we go through the contest, we must adapt to changes. RoboPainters will no longer work on empty canvases, but rather they will be given canvases already painted. 
+Each problem gives you an **initial configuration** of a canvas together with a **target painting**. Your job is to transform the initial canvas into something as close to the target as possible, at the lowest possible cost.
 
-As part of the full division problems, you will be given an initial configuration and a target painting. Initial configurations will have the following json schema.
-
-```json
-{
-  "width": <number>,
-  "height: <number>,
-  "blocks": [
-    {
-      "blockId": <block-id>, 
-      "bottomLeft": <point>, 
-      "topRight": <point>, 
-      "color": <color>
-    } 
-  ]
-}
-```
-Where `number` is an integer, `block-id` is an integer block id enclosed in double quotes, bottomLeft and topRight are `[number, number]`, color is `[number, number, number, number]`. One example is given below. This is basically the initial configuration we used in lightning division.
+Most problems start from a blank canvas — a single white block. The initial configuration is a JSON document describing the canvas size and its starting blocks:
 
 ```json
 {
   "width": 400,
-  "height: 400,
+  "height": 400,
   "blocks": [
     {
-      "blockId": "0", 
-      "bottomLeft": [0, 0], 
-      "topRight": [400, 400], 
+      "blockId": "0",
+      "bottomLeft": [0, 0],
+      "topRight": [400, 400],
       "color": [255, 255, 255, 255]
-    } 
+    }
   ]
 }
 ```
 
-Block id's will start from `0` and go to `n-1` for `n` blocks.
+Here `width` and `height` are integers, `blockId` is an integer id in double quotes, `bottomLeft` and `topRight` are `[x, y]` points, and `color` is `[r, g, b, a]`. Block ids start at `0` and run to `n-1` for `n` blocks.
 
-
-## Full Division v.2
-
-For the last 24 hours of the contest, we wanted to present you with a challenge worth of the time you have spent. In addition to having an initial configuration, now this initial configuration might contain a reference from a png. Your new task is to turn these pre-filled canvases to the target paintings.
-
-New initial configurations will be in the form
+Some problems start from a **pre-painted** canvas. In that case the initial configuration references pixel data from a source PNG, and a block can be filled from that PNG instead of a flat color:
 
 ```json
 {
   "width": 400,
-  "height: 400,
-  "sourcePngJSON": "https://cdn.robovinci.xyz/initialpngs/36.json", 
-  "sourcePngPNG": "https://cdn.robovinci.xyz/initialpngs/36.png", 
+  "height": 400,
+  "sourcePngJSON": "<url to the canvas' serialized RGBA data>",
   "blocks": [
     {
-      "blockId": "0", 
-      "bottomLeft": [0, 0], 
-      "topRight": [400, 200], 
+      "blockId": "0",
+      "bottomLeft": [0, 0],
+      "topRight": [400, 200],
       "color": [255, 255, 255, 255]
     },
-     {
-      "blockId": "1", 
-      "bottomLeft": [0, 200], 
-      "topRight": [400, 400], 
+    {
+      "blockId": "1",
+      "bottomLeft": [0, 200],
+      "topRight": [400, 400],
       "pngBottomLeftPoint": [200, 200]
     }
   ]
 }
 ```
 
-This means that, while the bottom part of the canvas is filled with (255, 255, 255, 255), upper part uses the png data given at "sourcePng" to fill itself. PNG data at "sourcePng" is the serialized RGBA data of a PNG the same shape/size/area as the canvas. Hence, each pixel coordinate corresponds to the same coordinate on the canvas.
-
-
-For these problems, cost coefficients are also adjusted.
-
-| Move Type | Base Cost |
-| --------- | --------- |
-| Line Cut  |     2     |
-| Point Cut |     3     |
-| Color     |     5     |
-| Swap      |     3     |
-| Merge     |     1     |
-
-
-
-## Timeline 
-
-Note that there will be updates to this specification, and more problems will be released during the contest. This will happen at these specific times:
-
-- 4 hours into the contest (new problems only, no changes to specification)
-- 8 hours into the contest (new problems only, no changes to specification)
-- 12 hours into the contest (new problems, small changes to the specification - we decided no changes to the specification)
-- 24 hours into the contest (after the lightning division ends)
-- 36 hours into the contest
-- 48 hours into the contest
-
-
-## Changelog
-
-- Fix(typo in question): Leondardo -> Leonardo
-- Functional definition of blocks is removed as it caused confusion.
-- Block definition is rewritten for clarity.
-- Rest API Documentation will be announced soon.
-- Size is the area of the rectangle. It can be calculated by multiplying width and height.
-- Playground is aimed at learning. It has some bugs(probably ones we currently don't know too, so please act with caution)
-- A shape is a rectangle
-- All given canvases in the lightning round are 400x400, they are colored with RGBA(255, 255, 255, 255), sorry for the initial mistake in the specification.
-- A minor bug in the implementation of the instruction validity checks is fixed. (cut [0] [200,200], swap [0.1] [0.3]) now works.
-- A major bug in the implementation of swap is fixed. All submissions will be rejudged in regard to this change, system will be closed between 15.00-15.10 UTC. 
-- We decided to apply no changes to the specification at 12.
-- A bug in the implementation of Point Cut is fixed. Please resubmit your codes in that regard.
-
+In this example the bottom half of the canvas is a flat white block, while the top half (`blockId` `1`) is filled from the source PNG. `sourcePngJSON` points to serialized RGBA data the same size as the canvas, so each pixel coordinate maps directly onto the canvas.
 
 # Problem Specification
 
@@ -154,9 +87,9 @@ A block is either a frame that consists of a set of sub-blocks; or a simple stru
 
 A move on a block either changes the block contents, or it destroys the old block and creates new ones.
 
-Color and Swap changes the contents of the block. 
+Color and Swap changes the contents of the block.
 
-Cut and Merge destroys(takes the block out of the scope so it cannot be referenced in the latter instructions) the old block, generates new blocks. 
+Cut and Merge destroys(takes the block out of the scope so it cannot be referenced in the latter instructions) the old block, generates new blocks.
 
 Merge does so by creating a new top level block where the id is created by holding a global counter incremented at each merge operation, destroying the old blocks and adding them as sub-blocks inside the newly created complex block. Sub-blocks generated via merge can never be addressed. They are only used to describe colors within a block. A simple block can only have pixels of the same color, but a complex block (consisting of multiple sub-blocks) can have multiple colors.
 
@@ -168,8 +101,7 @@ Blocks are uniquely defined by their **block_id**.
 
 ## Painting
 
-Painting is a concrete 2-dimensional pixel space of [**RGBA** channels](https://en.wikipedia.org/wiki/RGBA_color_model). For individual problems, you will be provided with **PNG** files
-for the paintings.
+Painting is a concrete 2-dimensional pixel space of [**RGBA** channels](https://en.wikipedia.org/wiki/RGBA_color_model). For individual problems, you will be provided with **PNG** files for the paintings.
 
 ## Moves
 
@@ -213,8 +145,7 @@ Blocks must have the **same shape** to be swapped.
 
 Merge move takes two blocks. It merges the blocks by creating a new block, adding these blocks to this new block as sub-blocks.
 
-Blocks must be **compatible** to be merged. They must be adjoint, and their adjoint sides must have the same length. Informally;
-the merge of the blocks must create a new rectangle.
+Blocks must be **compatible** to be merged. They must be adjoint, and their adjoint sides must have the same length. Informally; the merge of the blocks must create a new rectangle.
 
 Each time a merge operation is performed, a new block is created. The newly created block has the **block id** according to the global counter. For example, when global counter is *n*, the block generated by this merge operation will have the block id *n+1*.
 
@@ -222,37 +153,33 @@ Each time a merge operation is performed, a new block is created. The newly crea
 
 ## Instruction Language
 
-Your task is to apply a set of moves to a canvas to similarize it to a given target painting. The way you will provide these
-set of moves is via submitting an **ISL(Instruction Set Language)** file for each problem. **ISL code** directly corresponds to
-the set of moves given above.
+Your task is to apply a set of moves to a canvas to similarize it to a given target painting. The way you will provide these set of moves is via submitting an **ISL(Instruction Set Language)** file for each problem. **ISL code** directly corresponds to the set of moves given above.
 
 A BNF(Backus-Naur Form) form of the ISL grammar is given at the end of this specification.
 
-
 ## Cost Function
 
-Each move has a defined cost.
+Each move has a cost. The **base cost** of a move depends on its type:
 
-Below is the table for **base cost for each move**
+| Move      | Base cost | Base cost (problems 36+) |
+| --------- | --------- | ------------------------ |
+| Line Cut  | 7         | 2                        |
+| Point Cut | 10        | 3                        |
+| Color     | 5         | 5                        |
+| Swap      | 3         | 3                        |
+| Merge     | 1         | 1                        |
 
-| Move Type | Base Cost |
-| --------- | --------- |
-| Line Cut  |     7     |
-| Point Cut |     10    |
-| Color     |     5     |
-| Swap      |     3     |
-| Merge     |     1     |
+The later problems (id 36 and above) use the reduced cut costs in the right-hand column; every other problem uses the left column.
 
-The function for cost is;
+The cost of applying a move to a block is:
 
 ```Haskell
-cost(move, block, canvas) = round(base_cost(move) x size(canvas)/size(block))
+cost(move, block, canvas) = round(base_cost(move) * size(canvas) / size(block))
 ```
 
-Where `size(rectangle) = rectangle.width * rectangle.height`, and round is the nearest integer. We are using [Math.round](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round) function to compute the round.
+Where `size(rectangle) = rectangle.width * rectangle.height`, and round is the nearest integer. We use the [Math.round](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round) function to compute the round.
 
-For each submission, these score are calculated for each move and aggregated for the total cost calculation.
-
+The total instruction cost of a submission is the sum of these per-move costs.
 
 ## Similarity Function
 
@@ -268,7 +195,7 @@ Pixel difference is calculated via **Euclidian Distance of RGBA Values of Pixels
     g: number;
     b: number;
     a: number;
-  
+
     constructor(rgba: [number, number, number, number] = [0, 0, 0, 0]) {
       [this.r, this.g, this.b, this.a] = rgba;
     }
@@ -297,68 +224,51 @@ class SimilarityChecker {
 }
 ```
 
-
 ## Scoring
 
-Score for each individual **problem** is calculated by adding the cost of the `ISL code` and the result of the `Similarity Function`.  A higher cost will result in a lower position on the scoreboard.
+The score for a **problem** is the cost of your `ISL code` plus the result of the `Similarity Function`. A lower score is better.
 
-For the contest scoreboard, we will first classify participants by the number of problems they submitted solutions to. For each class of participants, we will sum their costs, sort them accordingly. We will then sort participant classes by the number of submitted solutions. 
+The scoreboard first classifies participants by the number of problems they have submitted solutions to. Within each class, participants are sorted by their summed cost; then the classes themselves are sorted by the number of submitted solutions.
 
-As a more concrete example, for the contestant list given below:
+As a concrete example, for the participant list below:
 
-P1: 2 problems, total cost 90  
-P2: 3 problems, total cost 100  
-P3: 2 problems, total cost 80  
-P4: 1 problems, total cost 50  
+P1: 2 problems, total cost 90
+P2: 3 problems, total cost 100
+P3: 2 problems, total cost 80
+P4: 1 problem, total cost 50
 
-Scoreboard would have the participants sorted as `P2, P3, P1, P4`. 
+the scoreboard would order the participants as `P2, P3, P1, P4`.
 
 # Submission
 
-You will submit **ISL code** over panel inside the portal. We will also provide a REST API for the submissions.
-
-# Deadlines
-
-As traditional, the contest will have a Lightning Division spanning the first 24 hours. To qualify for the Lightning Division prize, submit your ISL codes by September 3, 2021, 12:00pm (noon) UTC.
-
-To qualify for the Full Division prize, submit your ISL codes by September 5, 2021, 12:00pm (noon) UTC.
-
-In order to qualify for any prizes, your source code must be submitted by the end of the contest as well. You can do this through the web portal.
-
-# Determining the Winner
-
-We will use the same procedure to determine the winner in both the lightning and full divisions, ranking the teams by cumulative score, computed as the sum of scores for each task.
+You submit **ISL code** from the problem page in the portal. A REST API is also available (see below). Submissions are evaluated automatically and your best cost per problem is reflected on the scoreboard.
 
 # REST API
 
-You can use the given endpoints to do your submissions.
+You can use these endpoints to submit programmatically. Authenticate with the token returned by `POST /api/users/login` (send it as `Authorization: Bearer <token>`). In the examples below, replace the host with the API server this site is configured against.
 
-## API Endpoints
+`GET /api/users` — Get information about your team. Useful to verify your token works.
 
-GET /api/users Get information of your team. This can be used to verify that you can access API with your token.
+`POST /api/problems/$PROBLEM_ID` — Make a submission. The `multipart/form-data` body should contain your ISL file under the key `file`. Returns a submission id.
 
-POST /api/problems/$PROBLEM_ID Make a submission. The multipart/form-data body of the request should contain your isl file with the key 'file' . Returns a submission ID.
+Example request:
 
-Example CURL Request : 
+    curl --header "Authorization: Bearer <your-token>" \
+      -F file=@your.isl \
+      https://minivinci-be.fly.dev/api/problems/1
 
-    curl --header "Authorization: Bearer YourAPIToken" -F 
-    file=@your.isl https://robovinci.xyz/api/problems/1
+`GET /api/submissions/$SUBMISSION_ID` — Retrieve information about a submission. Returns a JSON object with:
 
-GET /api/submissions/$SUBMISSION_ID Retrieves information about a submission. It returns a JSON object with the following attributes: 
-    • status: Either QUEUED, PROCESSING, SUCCEEDED, or FAILED
-    • cost: The calculated cost, when submission is SUCCEEDED. 
-    • error: The error message, when submission is FAILED.
-    • file_url: The link of the submitted file.
+- `status`: one of `QUEUED`, `PROCESSING`, `SUCCEEDED`, or `FAILED`
+- `cost`: the calculated cost, when the submission `SUCCEEDED`
+- `error`: the error message, when the submission `FAILED`
+- `file_url`: a link to the submitted file
 
-
-GET /api/results/user Retrieves result of all problems.
-
+`GET /api/results/user` — Retrieve your results across all problems.
 
 # ISL Specification
 
-ISL code is a set of *moves* over a canvas.
-
-We start with a description of ISL grammar.
+ISL code is a set of *moves* over a canvas. We start with a description of the ISL grammar.
 
 ## ISL Grammar
 
@@ -366,7 +276,7 @@ We start with a description of ISL grammar.
 <program>               ::=     <program-line> | <program-line> <newline> <program>
 <program-line>          ::=     <newline> | <comment> | <move>
 <comment>               ::=     "#" <unicode-string>
-<move>                  ::=     <pcut-move> | <lcut-move> | <color-move>  
+<move>                  ::=     <pcut-move> | <lcut-move> | <color-move>
                                 | <swap-move> | <merge-move>
 <pcut-move>             ::=     "cut" <block> <point>
 <lcut-move>             ::=     "cut" <block> <orientation> <line-number>
@@ -380,11 +290,10 @@ We start with a description of ISL grammar.
 <line-number>           ::=     "[" <number> "]"
 <block>                 ::=     "[" <block-id> "]"
 <point>                 ::=     "[" <x> "," <y> "]"
-<color>                 ::=     "[" <r> "," <g> "," <b> "," <a> "]" 
+<color>                 ::=     "[" <r> "," <g> "," <b> "," <a> "]"
 <block-id>              ::=     <id> | <id> "." <block-id>
 <x> | <y>               ::=     "0", "1", "2"...
 <id> | <number>         ::=     "0", "1", "2"...
 <r> | <g> | <b> | <a>   ::=     "0", "1", "2"..."255"
 <newline>               ::=     "\n"
 ```
-

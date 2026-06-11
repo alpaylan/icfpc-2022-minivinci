@@ -25,6 +25,10 @@ RUN npm run build && npm prune --omit=dev
 FROM node:20-bookworm-slim AS runtime
 WORKDIR /app
 
+# Root CA certificates so the static Go binary can verify TLS for R2/S3 over
+# HTTPS (the slim Node runtime image ships without a system CA bundle).
+COPY --from=gobuild /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+
 # Go API + seeder
 COPY --from=gobuild /out/server /app/server
 COPY --from=gobuild /out/seed /app/seed
